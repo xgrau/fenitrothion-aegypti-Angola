@@ -1,4 +1,4 @@
-# Transcriptomic analyisis of pirmiphos-methyl resistance in *A. gambiae* and *A. coluzzii*
+# Transcriptomic analysis of fenitrothion resistance in *Aedes aegypti* from Angola 
 
 Code and data to reproduce the analyses of differential gene expression in pirimiphos-methyl resistant *A. gambiae* and *A. coluzzii* from Côte d'Ivoire. Each of the resistant strains was independently compared to lab colonies from the same species (see below).
 
@@ -7,7 +7,7 @@ Code and data to reproduce the analyses of differential gene expression in pirim
 To re-do the main analyses of the paper, just clone this repository and run the following `R` script:
 
 ```bash
-git clone git@github.com:xgrau/pm-resistance-gamcol # or download it
+git clone git@github.com:xgrau/fenitrothion-aegypti-Angola # or download it
 ```
 
 ## Contents
@@ -24,41 +24,22 @@ Folders:
 
 ### Differential expression analyses
 
-To run the differential expression analyses for *gambiae* and *coluzzii* samples:
+To run the differential expression analysis:
 
 ```bash
-# coluzzii differential expression analysis:
-Rscript s01_dexp_deseq2_col_2020-01-14.R
-# gambiae differential expression analysis:
-Rscript s01_dexp_deseq2_gam_2020-01-14.R
+Rscript XXXXX.R
 ```
 
 The scripts will:
 
 * load input data,
-* perform the differential expression analysis between various groups of samples from a given species (susceptible colonies or `Col`, resistant controls or `RCo`, and resistant & exposed or `REx`; see below)
-* Two types of comparisons: incremental expression in resistant (`Col<RCo<REx`) and consensus over-expression in resistant (`RCo>Col && REx>Col`).
+* perform the differential expression analysis between various groups of samples
 * perform functional enrichment analyses of differentially expressed genes
-* create figures and tables and various outputs, for each species (`results_de_gam/` and `results_de_col` folders).
+* create figures and tables and various outputs, for each species (`results_de/`).
 
 All necessary input data and gene annotations are included in this package (see **Contents** section below).
 
 `R` libraries required to run these analyses are listed below (**Requirements** section).
-
-### Differential splicing analyses
-
-TODO
-
-```bash
-# coluzzii differential expression analysis:
-Rscript s02_differential_isoforms_gam_2020-02-06.R
-# gambiae differential expression analysis:
-Rscript s02_differential_isoforms_gam_2020-02-06.R
-```
-
-### Genetic variation in the transcriptome
-
-See `README.md` in `results_variation/` folder.
 
 ## Methods
 
@@ -69,34 +50,7 @@ For *gambiae* samples
 | Sample code | Category | Species | Susceptible? | Exposed? |
 |----- | -- | -- | -- | -- |
 | Ki11 | Col | gam | Sus | Une |
-| Ki2 | Col | gam | Sus | Une |
-| Ki5 | Col | gam | Sus | Une |
-| Ki7 | Col | gam | Sus | Une |
-| SC10 | RCo | gam | Res | Une |
-| SC6 | RCo | gam | Res | Une |
-| SC7 | RCo | gam | Res | Une |
-| SC9 | RCo | gam | Res | Une |
-| SS11 | REx | gam | Res | Exp |
-| SS5 | REx | gam | Res | Exp |
-| SS7 | REx | gam | Res | Exp |
 | SS9 | REx | gam | Res | Exp |
-
-*coluzzii* samples:
-
-| Sample code | Category | Species | Susceptible? | Exposed? |
-|----- | -- | -- | -- | -- |
-| Ng1 | Col | col | Sus | Une |
-| Ng11 | Col | col | Sus | Une |
-| Ng4 | Col | col | Sus | Une |
-| Ng7 | Col | col | Sus | Une |
-| MC6 | RCo | col | Res | Une |
-| MC7 | RCo | col | Res | Une |
-| MC8 | RCo | col | Res | Une |
-| MC9 | RCo | col | Res | Une |
-| MS1 | REx | col | Res | Exp |
-| MS3 | REx | col | Res | Exp |
-| MS5 | REx | col | Res | Exp |
-| MS7 | REx | col | Res | Exp |
 
 ### Read mapping
 
@@ -114,11 +68,11 @@ salmon quant -i Anogam_long.cds_mcherry.salmon.index -l A -p 10 -1 sampleA_1.fas
 
 The read files (fastq format) are not provided in this repository, but they can be found in the ENA public repository under the `XXX` accession number.
 
-Reads have been mapped to *Anopheles gambiae* transcripts, annotation AgamP4.9. Downlodaed from  [Vectorbase](https://www.vectorbase.org/downloads).
+Reads have been mapped to *Aedes aegypti* transcripts, annotation XXXX. Downloaded from  [Vectorbase](https://www.vectorbase.org/downloads).
 
 ## Requirements
 
-Analyses for the paper were run on `R` 3.6.1.
+Analyses were run on `R` 3.6.1.
 
 The following libraries are required to run the main script:
 
