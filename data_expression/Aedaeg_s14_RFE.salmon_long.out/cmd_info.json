@@ -1,0 +1,10 @@
+{
+    "salmon_version": "0.10.2",
+    "index": "Aedaeg_long.cds.salmon.index",
+    "libType": "A",
+    "threads": "10",
+    "mates1": "input//Aedaeg_s14_RFE_1.fastq.gz",
+    "mates2": "input//Aedaeg_s14_RFE_2.fastq.gz",
+    "output": "Aedaeg_s14_RFE.salmon_long.out",
+    "auxDir": "aux_info"
+}

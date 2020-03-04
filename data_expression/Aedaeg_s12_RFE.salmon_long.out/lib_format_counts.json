@@ -1,0 +1,21 @@
+{
+    "read_files": "( input//Aedaeg_s12_RFE_1.fastq.gz, input//Aedaeg_s12_RFE_2.fastq.gz )",
+    "expected_format": "ISR",
+    "compatible_fragment_ratio": 1.0,
+    "num_compatible_fragments": 12131064,
+    "num_assigned_fragments": 12131064,
+    "num_frags_with_consistent_mappings": 11382838,
+    "num_frags_with_inconsistent_or_orphan_mappings": 748226,
+    "MSF": 0,
+    "OSF": 0,
+    "ISF": 764,
+    "MSR": 0,
+    "OSR": 0,
+    "ISR": 11382838,
+    "SF": 444777,
+    "SR": 302685,
+    "MU": 0,
+    "OU": 0,
+    "IU": 0,
+    "U": 0
+}
