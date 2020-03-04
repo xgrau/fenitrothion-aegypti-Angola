@@ -63,4 +63,8 @@ Tools:
    python s02_differentiation_v03.py
    ```
 
-7. Post-processing in `R`
+7. Find top PBS genes in the resistant population, perform functional enrichment analyses:
+
+   ```bash
+   Rscript s03_genewise_analysis_v02.R
+   ```
