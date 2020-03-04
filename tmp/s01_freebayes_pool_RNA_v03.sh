@@ -76,16 +76,20 @@ vcf_freebayes () {
 
 # combine all samples into a single VCF
 vcf_combine () {
+	split ${dir}/variants_gvcf_transcripts/regions.list ${dir}/variants_gvcf_transcripts/regions.list_split
 	if [ ! -f "${dir}/variants_combined_transcripts/${out_prefix}_raw.vcf.gz" ] ; then
 		echo "$(date '+%Y-%m-%d %H:%M:%S') COMBINE RAW VCFs: ${dir}/variants_combined_transcripts/${out_prefix}_raw.vcf.gz"
-		for list in transcript_split_bedfiles/list_* ; do
-			bcftools merge --threads ${nt} --regions-file ${list} \
+		for list in ${dir}/variants_gvcf_transcripts/regions.list_split* ; do
+			sed "s/:\([0-9]*\)-\([0-9]*\)$/\t\1\t\2/" ${list} | awk '{ print $1"\t"$2+1"\t"$3+1 }' \
+			> ${dir}/variants_gvcf_transcripts/regions.tmplist
+			bcftools merge --threads ${nt} --regions-file ${dir}/variants_gvcf_transcripts/regions.tmplist \
 			${vcf_input_list} --output-type z \
 			--info-rules DP:sum,RO:sum,QR:sum,AO:sum,QA:sum
 		done \
 		> ${dir}/variants_combined_transcripts/${out_prefix}_raw.vcf.tmp.gz \
 		&& mv ${dir}/variants_combined_transcripts/${out_prefix}_raw.vcf.tmp.gz ${dir}/variants_combined_transcripts/${out_prefix}_raw.vcf.gz \
-		&& tabix -p vcf ${dir}/variants_combined_transcripts/${out_prefix}_raw.vcf.gz
+		&& tabix -p vcf ${dir}/variants_combined_transcripts/${out_prefix}_raw.vcf.gz \
+		&& rm ${dir}/variants_gvcf_transcripts/regions.list_split* ${dir}/variants_gvcf_transcripts/regions.tmplist
 	else
 		echo "$(date '+%Y-%m-%d %H:%M:%S') FOUND RAW VCFs: ${dir}/variants_combined_transcripts/${out_prefix}_raw.vcf.gz"
 	fi

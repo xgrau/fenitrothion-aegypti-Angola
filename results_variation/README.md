@@ -44,10 +44,13 @@ Tools:
 
    ```
 
-4. VCF calling with `freebayes`, filters with `bcftools`. WARNING: edit this cript to update `dir` and `ref` folders, as defined in step 1. Relevant variables are indicated at the beginning of the script.
+4. VCF calling with `freebayes`, filters with `bcftools`.
+  
+   **WARNING**: different samples have different number of specimens, and therefore different ploidy in the freebayes genotyper! Specify sample-specific ploidy values in the `../data_metadata/samples_num_specimens.csv` file.
+   **WARNING**: edit this cript to update `dir` and `ref` folders, as defined in step 1. Relevant variables are indicated at the beginning of the script.
 
    ```bash
-   bash s01_freebayes_pool_RNA_v03.sh ../data_metadata/samples.list ${nt}
+   bash s01_freebayes_pool_RNA_v04.sh ../data_metadata/samples_num_specimens.csv ${nt}
    ```
 
 5. Convert VCF to ZARR and/or HDF5:
@@ -58,6 +61,8 @@ Tools:
    ```
 
 6. Calculate gene-wise genetic differentiation statistics ($F_{ST}$ and $PBS$) for each species using `scikit-allel`, which will be stored in the `differentiation_XXX.csv` files.
+
+   **TODO**: fix sample-specific ploidy differences! Recorded in the `../data_metadata/samples_num_specimens.csv` file.
 
    ```bash
    python s02_differentiation_v03.py

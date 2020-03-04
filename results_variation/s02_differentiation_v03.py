@@ -1,6 +1,6 @@
 # define working dir
 import os
-os.chdir("/home/xavi/Documents/pm-resistance-gamcol/results_variation/")
+os.chdir("/home/xavi/Documents/fenitrothion-aegypti-Angola/results_variation")
 
 # import libraries
 import allel
@@ -16,16 +16,16 @@ import logging
 import scipy.stats
 
 # input files
-species_id = "gam"
-listsam_fn = "../data_metadata/samples_gam.list"
-metasam_fn = "../data_metadata/samples_gam.class"
-callset_fn = "data_variation/gam_recode.vcf.gz" # to retrieve genotypes with proper ploidy, we need VCF
-callhd5_fn = "data_variation/gam_recode.h5"     # to retrieve variant info, HDF5
-anngene_fn = "../data_genome/Anogam_long.annot.gff"
+species_id = "aeg"
+listsam_fn = "../data_metadata/samples.list"
+metasam_fn = "../data_metadata/samples_classification.csv"
+callset_fn = "data_variation/out_recode.vcf.gz" # to retrieve genotypes with proper ploidy, we need VCF
+callhd5_fn = "data_variation/out_recode.h5"     # to retrieve variant info, HDF5
+anngene_fn = "../data_genome/Aedaeg_long.annot.gff"
 
 # define population/group comparison
-popl = ["Col","RCo","REx"]
-popc = "group"
+popl = ["RUN","RFE","SUS"]
+popc = "resexp"
 
 # general settings
 sns.set(style="ticks",
@@ -39,9 +39,6 @@ logging.basicConfig(
 	# handlers=[ logging.FileHandler("%s.log" % out_fn, mode="w"), logging.StreamHandler() ]
 	)
 
-# define 0.01 threshld for standardised tests (two-sided)
-zscore_thr = scipy.stats.norm.ppf((1-0.99)/2)
-
 ## LOAD METADATA
 
 # list of samples
@@ -50,7 +47,7 @@ listsam = listsam[0].values
 
 # population metadata
 samples = pd.read_csv(metasam_fn, sep='\t')
-samples.columns = ["sample","group","species","susceptibility","exposure"]
+samples.columns = ["sample","group","resistance","exposure","colony","resexp"]
 
 # load gene annotations: in pandas format, and in pyranges format
 # pandas
