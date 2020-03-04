@@ -57,13 +57,21 @@ Tools:
    allel.vcf_to_hdf5('out_recode.vcf.gz', 'out_recode.h5', exclude_fields=['variants/numalt'], overwrite=True)
    ```
 
-6. Calculate gene-wise genetic differentiation statistics ($F_{ST}$ and $PBS$) for each species using `scikit-allel`, which will be stored in the `differentiation_sps.csv` files:
+6. Calculate gene-wise genetic differentiation statistics ($F_{ST}$ and $PBS$) for each species using `scikit-allel`, which will be stored in the `differentiation_XXX.csv` files.
 
    ```bash
    python s02_differentiation_v03.py
    ```
 
-7. Find top PBS genes in the resistant population, perform functional enrichment analyses:
+   In this analysis, we compare allelic frequencies in three populations:
+
+   * population 1 is `RFE`
+   * population 2 is `RUN`
+   * population 3 is a pool of `SNO`and `SRO` (susceptible)
+
+   `PBS >> 0` indicates selection in population 1.
+
+7. Find top PBS genes in the resistant populations (`RFE`), perform functional enrichment analyses on these genes. Top differentiated genes are identified by obtaining p-values from the standardised PBS distribution (z-scores), adjusting using FDR, and applying a threshold at `p<0.001`:
 
    ```bash
    Rscript s03_genewise_analysis_v02.R
