@@ -22,8 +22,8 @@ fi
 
 
 # directories
-dir="/home/xavi/dades/Transcriptomes/Anogam_pmres_2020-01-09"
-ref="${dir}/reference_transcripts/Anogam_long.cds.fasta"
+dir="/home/xavi/dades/Transcriptomes/Aedaeg_Angola_19oct18/"
+ref="${dir}/reference_transcripts/Aedaeg_long.cds.fasta"
 generate_regions_py="scripts/fasta_generate_regions.py"
 vcf_fix_header_py="scripts/vcffirstheader.py"
 

@@ -44,10 +44,10 @@ Tools:
 
    ```
 
-4. VCF calling with `freebayes`, filters with `bcftools`.
+4. VCF calling with `freebayes`, filters with `bcftools`. WARNING: edit this cript to update `dir` and `ref` folders, as defined in step 1. Relevant variables are indicated at the beginning of the script.
 
    ```bash
-   bash s01_freebayes_pool_RNA_v02.sh ../data_metadata/samples.list ${nt}
+   bash s01_freebayes_pool_RNA_v03.sh ../data_metadata/samples.list ${nt}
    ```
 
 5. Convert VCF to ZARR and/or HDF5:
