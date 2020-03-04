@@ -4,25 +4,13 @@ Code and data to reproduce the analyses of differential gene expression in pirim
 
 ## Setup
 
-To re-do the main analyses of the paper, just clone this repository and run the following `R` script:
+To re-do the main analyses of the paper, just clone this repository and run the following *R* script:
 
 ```bash
 git clone git@github.com:xgrau/fenitrothion-aegypti-Angola # or download it
 ```
 
-## Contents
-
-Folders:
-
-* `data_expression/`: sample-specific gene expression data, as produced by `salmon`. It's formatted for easy loading into `DESeq2`
-* `data_genome/`: genome annotations (GO, Pfam, gene names, etc.) required for functional enrichments and gene annotation.
-* `data_metadata/`: list of samples (12 in total) and sample classification. Sample classification codes are used in `DESeq2` to define specific comparisons between sample groups.
-* `helper_scripts`: custom scripts for basic plots (heatmaps, volcano plots) and functional gene enrichment. Sourced by the main scripts.
-* `results*/`: various folders with results, see below.
-
-## Analyses
-
-### Differential expression analyses
+## Differential expression
 
 To run the differential expression analysis:
 
@@ -37,20 +25,52 @@ The scripts will:
 * perform functional enrichment analyses of differentially expressed genes
 * create figures and tables and various outputs, for each species (`results_de/`).
 
-All necessary input data and gene annotations are included in this package (see **Contents** section below).
+You can find gene-wise differential expression statistics for each comparison (fold changes, p-values, etc.) in the `results_de/` folder, specifically in the `session.deseq_difexp.ALL.RUN-SRO.csv` tables. There is one table per each comparison:
 
-`R` libraries required to run these analyses are listed below (**Requirements** section).
+* `RUN-SRO`: resistant unexposed to susceptible Rockefeller colony. Positive FC = overexpression in RUN.
+* `RUN-SNO`: resistant unexposed to susceptible New Orléans colony. Positive FC = overexpression in RUN.
+* `RUN-RFE`: resistant unexposed to resistant exposed. Positive FC = overexpression in RUN.
+
+Naming converions for the other output files in `results_de/`:
+
+* files prefixed with `de_all`: results of some analyses of differential expression common to all samples, such as PCAs, sample clustering, heatmaps, etc.
+* files prefixed with `de_co`: results from differential expression analyses specific to one comparison. For example, files with `de_co.ALL.RUN-SRO` contain info on the comparison of `RUN` (resistant unexposed) to `SRO` (Susceptible Rockefeller colony) samples.
+* files prefixed with `session`: concatenated outputs from the various individual comparisons (and the *R* session).
+
+All necessary input data and gene annotations are included in this package (see **Contents** section).
+
+*R* libraries required to run these analyses are listed below (**Requirements** section).
+
+## Contents
+
+Folders:
+
+* `data_expression/`: sample-specific gene expression data, as produced by *salmon*. It can be loaded into *DESeq2*.
+* `data_genome/`: genome annotations (GO, Pfam, gene names, etc.) required for functional enrichments and gene annotation.
+* `data_metadata/`: list of samples (12 in total) and sample classification. Sample classification codes are used in *DESeq2* to define specific comparisons between sample groups.
+* `helper_scripts`: custom scripts for basic plots (heatmaps, volcano plots) and functional gene enrichment. Sourced by the main scripts.
+* `results_de/`: output from differenial expression analysis
 
 ## Methods
 
 ### Sample list
 
-For *gambiae* samples
+List of samples:
 
-| Sample code | Category | Species | Susceptible? | Exposed? |
-|----- | -- | -- | -- | -- |
-| Ki11 | Col | gam | Sus | Une |
-| SS9 | REx | gam | Res | Exp |
+| Sample code | Category | Resistant? | Exposed? | Colony | Resistant+Exposed? | 
+| ------- | --- | --- | ---- | ------ | --- |
+| s01_RUN | RUN | Res | Unex | Angola | RUN |
+| s02_RUN | RUN | Res | Unex | Angola | RUN |
+| s03_RUN | RUN | Res | Unex | Angola | RUN |
+| s12_RFE | RFE | Res | Feex | Angola | RFE |
+| s13_RFE | RFE | Res | Feex | Angola | RFE |
+| s14_RFE | RFE | Res | Feex | Angola | RFE |
+| s05_SNO | SNO | Sus | Unex | NewOrl | SUS |
+| s06_SNO | SNO | Sus | Unex | NewOrl | SUS |
+| s07_SNO | SNO | Sus | Unex | NewOrl | SUS |
+| s08_SRO | SRO | Sus | Unex | Rockef | SUS |
+| s09_SRO | SRO | Sus | Unex | Rockef | SUS |
+| s10_SRO | SRO | Sus | Unex | Rockef | SUS |
 
 ### Read mapping
 
@@ -68,24 +88,24 @@ salmon quant -i Anogam_long.cds_mcherry.salmon.index -l A -p 10 -1 sampleA_1.fas
 
 The read files (fastq format) are not provided in this repository, but they can be found in the ENA public repository under the `XXX` accession number.
 
-Reads have been mapped to *Aedes aegypti* transcripts, annotation XXXX. Downloaded from  [Vectorbase](https://www.vectorbase.org/downloads).
+Reads have been mapped to *Aedes aegypti* transcripts, annotation version L5.1. Downloaded from  [Vectorbase](https://www.vectorbase.org/downloads). Only longest transcript per gene.
 
-## Requirements
+### Requirements
 
-Analyses were run on `R` 3.6.1.
+Analyses were run on *R* 3.6.1.
 
 The following libraries are required to run the main script:
 
 ```R
-library(DESeq2)
-library(tximport)
 library(ape)
 library(gplots)
 library(stringr)
 library(plyr)
 library(tidyr)
 library(topGO)
+library(tximport)
 library(readr)
+library(DESeq2)
 library(pheatmap)
 library(cluster)
 library(VennDiagram)
