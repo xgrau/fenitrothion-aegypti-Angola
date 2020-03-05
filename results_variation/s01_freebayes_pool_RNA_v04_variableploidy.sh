@@ -31,17 +31,6 @@ vcf_fix_header_py="scripts/vcffirstheader.py"
 mkdir -p "${dir}/variants_gvcf_transcripts/"
 mkdir -p "${dir}/variants_combined_transcripts/"
 
-# list of input bam
-bam_input_list=$( for s in $sample_list ; do 
-	echo ${dir}/alignments_transcripts/${s}.bam
-done )
-
-# list of input raw vcf
-vcf_input_list=$( for s in $sample_list ; do 
-	echo ${dir}/variants_gvcf_transcripts/${s}.raw.vcf.gz
-done )
-
-
 
 
 
@@ -83,6 +72,10 @@ vcf_combine () {
 	split ${dir}/variants_gvcf_transcripts/regions.list ${dir}/variants_gvcf_transcripts/regions.list_split
 	if [ ! -f "${dir}/variants_combined_transcripts/${out_prefix}_raw.vcf.gz" ] ; then
 		echo "$(date '+%Y-%m-%d %H:%M:%S') COMBINE RAW VCFs: ${dir}/variants_combined_transcripts/${out_prefix}_raw.vcf.gz"
+		# list of input raw vcf
+		vcf_input_list=$( while read -a sample ; do 
+				echo ${dir}/variants_gvcf_transcripts/${sample[0]}.raw.vcf.gz
+		done < ${sample_list} )
 		for list in ${dir}/variants_gvcf_transcripts/regions.list_split* ; do
 			sed "s/:\([0-9]*\)-\([0-9]*\)$/\t\1\t\2/" ${list} | awk '{ print $1"\t"$2+1"\t"$3+1 }' \
 			> ${dir}/variants_gvcf_transcripts/regions.tmplist
