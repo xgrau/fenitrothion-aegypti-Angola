@@ -1,12 +1,11 @@
 #### Input ####
 
 # genewise differentiation
-gen_fn = "differentiaton_gam.csv"
+gen_fn = "differentiaton_aeg.csv"
 
 # genome annotations
-txgdict = "../data_genome/Anogam_tx2ge.csv"
-gomapfi = "../data_genome/Anogam_genes_eggnog_diamond.emapper.annotations.GO"
-panfile = "../data_genome/Anogam_genes_Pfamscan.seqs"
+gomapfi = "../data_genome/Aedaeg_eggnog_dipNOG.emapper.annotations.GO.csv"
+panfile = "../data_genome/Aedaeg_long.pep_Pfamscan.seqs"
 
 # where to store output?
 outcode = "differentiaton_gam_out" # (folder + prefix)
@@ -17,24 +16,18 @@ library(fdrtool)
 source("../helper_scripts/geneSetAnalysis.R")
 
 # chromosomes to include
-chromlist = c("2R","2L","3R","3L","X")
+chromlist = c("2","3","1")
 
 # genewise differentiation statistics
 gen = read.table(gen_fn, sep="\t", header = T)
 gen = gen[gen$seqid %in% chromlist,]
 # gen = gen[gen$nvar > 10,]
 
-# transcript to gene dictionary
-di           = read.table(txgdict)
-colnames(di) = c("transcript_id","gene_id")
-di           = di[,1:2]
-
 # functional mappings: GO, pfam
 gomap = readMappings(gomapfi)
 panno = read.table(file = panfile)
-colnames(panno) = c("gene","pstart","pend","pfamid","domain","domseq")
-panno = merge(panno,di, by.x="gene", by.y="gene_id")
-pannu = subset(panno, select=c("gene","pfamid","domain"))
+colnames(panno) = c("transcript","pstart","pend","pfamid","domain","domseq")
+pannu = subset(panno, select=c("transcript","pfamid","domain"))
 pannu = pannu[!duplicated(pannu), ]
 
 
@@ -58,7 +51,7 @@ hist(gen_variant$pbs_zscore,
 # plot standardised PBS along chromosome (per gene)
 for (chrom in chromlist) {
   plot(x=gen_variant[gen_variant$seqid==chrom,"start"]/1e6, y=gen_variant[gen_variant$seqid==chrom,"pbs_zscore"], col="blue",
-       xlim=c(0,65), ylim=c(-10,10), cex=0.5,
+       xlim=c(0,500), ylim=c(-10,10), cex=0.5,
        xlab="Mb",ylab="standardised PBS",
        main=sprintf("%s",chrom),las=1)
   abline(h=0,lty=2)
@@ -69,11 +62,11 @@ dev.off()
 #### Functional enrichment ####
 
 # genes with the most extreme highest pbs values
-list_genes = as.vector(gen_variant[gen_variant$PBS_p_adj < 0.001, "Parent"])
+list_genes = as.vector(gen_variant[gen_variant$PBS_p_adj < 0.001, "ID"])
 list_genes = list_genes[!is.na(list_genes)]
 # functional enrichments
 hygeofun(list_interest=list_genes, 
-         annotation=pannu, gene_col="gene", ano_col="domain",
+         annotation=pannu, gene_col="transcript", ano_col="domain",
          outputname=outcode,
          name_geneset="PBStop",topnum = 30, padjbool = F)
 suppressMessages(topgofun(list_interest=list_genes, 

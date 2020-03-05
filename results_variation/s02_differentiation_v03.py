@@ -19,8 +19,8 @@ import scipy.stats
 species_id = "aeg"
 listsam_fn = "../data_metadata/samples.list"
 metasam_fn = "../data_metadata/samples_classification.csv"
-callset_fn = "data_variation/out_recode.vcf.gz" # to retrieve genotypes with proper ploidy, we need VCF
-callhd5_fn = "data_variation/out_recode.h5"     # to retrieve variant info, HDF5
+callset_fn = "variants/out_recode.vcf.gz" # to retrieve genotypes with proper ploidy, we need VCF
+callhd5_fn = "variants/out_recode.h5"     # to retrieve variant info, HDF5
 anngene_fn = "../data_genome/Aedaeg_long.annot.gff"
 
 # define population/group comparison
@@ -71,7 +71,7 @@ nondefault_numbers = {
     'variants/CHROM': 1, 'variants/POS': 1, 'variants/ID': 1, 'variants/REF': 1, 'variants/ALT': 'A',
     'variants/QUAL': 1,  'variants/DP': 1,  'variants/AN': 1, 'variants/AC': 'A', 'variants/AF': 'A',
     'variants/MQ': 1,    'variants/ANN': 1, 'calldata/DP': 1,
-    'calldata/GT': 10, ## default is 2, but we need to use 10 beacuse we have ploidy = 10 (diploid * 5 samples)
+    'calldata/GT': 20, ## default is 2, but we need to use 10 beacuse we have ploidy = 10 (diploid * 5 samples)
     'calldata/GQ': 1, 'calldata/HQ': 2, 'calldata/AD': 'R', 'calldata/MQ0': 1, 'calldata/MQ': 1
 }
 
@@ -151,45 +151,45 @@ for i,gei in gen.iterrows():
 
 		# average PBS per gene + SE
 		gen_pbs_av[i], gen_pbs_se[i], _ , _ = average_pbs(
-			ac1=genalco_seg["REx"].compress(gei_bool), 
-			ac2=genalco_seg["RCo"].compress(gei_bool), 
-			ac3=genalco_seg["Col"].compress(gei_bool), 
+			ac1=genalco_seg["RFE"].compress(gei_bool), 
+			ac2=genalco_seg["RUN"].compress(gei_bool), 
+			ac3=genalco_seg["SUS"].compress(gei_bool), 
 			blen=1, normed=True)
 
 		# average Fst per gene + SE
 		gen_fst_12_av[i], gen_fst_12_se[i], _ , _ = allel.average_hudson_fst(
-			ac1=genalco_seg["REx"].compress(gei_bool), 
-			ac2=genalco_seg["RCo"].compress(gei_bool), 
+			ac1=genalco_seg["RFE"].compress(gei_bool), 
+			ac2=genalco_seg["RUN"].compress(gei_bool), 
 			blen=1)
 		gen_fst_13_av[i], gen_fst_13_se[i], _ , _ = allel.average_hudson_fst(
-			ac1=genalco_seg["REx"].compress(gei_bool), 
-			ac2=genalco_seg["Col"].compress(gei_bool),
+			ac1=genalco_seg["RFE"].compress(gei_bool), 
+			ac2=genalco_seg["SUS"].compress(gei_bool),
 			blen=1)
 		gen_fst_23_av[i], gen_fst_23_se[i], _ , _ = allel.average_hudson_fst(
-			ac1=genalco_seg["RCo"].compress(gei_bool), 
-			ac2=genalco_seg["Col"].compress(gei_bool),
+			ac1=genalco_seg["RUN"].compress(gei_bool), 
+			ac2=genalco_seg["SUS"].compress(gei_bool),
 			blen=1)
 
 		# average tajima D per gene
 		gen_tad_1[i] = allel.tajima_d(
-			ac=genalco_seg["REx"].compress(gei_bool),
+			ac=genalco_seg["RFE"].compress(gei_bool),
 			pos=genvars_seg["POS"].compress(gei_bool))
 		gen_tad_2[i] = allel.tajima_d(
-			ac=genalco_seg["RCo"].compress(gei_bool),
+			ac=genalco_seg["RUN"].compress(gei_bool),
 			pos=genvars_seg["POS"].compress(gei_bool))
 		gen_tad_3[i] = allel.tajima_d(
-			ac=genalco_seg["Col"].compress(gei_bool),
+			ac=genalco_seg["SUS"].compress(gei_bool),
 			pos=genvars_seg["POS"].compress(gei_bool))
 
 		# average genetic diversity
 		gen_pid_1[i] = allel.sequence_diversity(
-			ac=genalco_seg["REx"].compress(gei_bool),
+			ac=genalco_seg["RFE"].compress(gei_bool),
 			pos=genvars_seg["POS"].compress(gei_bool))
 		gen_pid_2[i] = allel.tajima_d(
-			ac=genalco_seg["RCo"].compress(gei_bool),
+			ac=genalco_seg["RUN"].compress(gei_bool),
 			pos=genvars_seg["POS"].compress(gei_bool))
 		gen_pid_3[i] = allel.tajima_d(
-			ac=genalco_seg["Col"].compress(gei_bool),
+			ac=genalco_seg["SUS"].compress(gei_bool),
 			pos=genvars_seg["POS"].compress(gei_bool))
 
 		
