@@ -1,6 +1,6 @@
 # Transcriptomic analysis of fenitrothion resistance in *Aedes aegypti* from Angola 
 
-Code and data to reproduce the analyses of differential gene expression in pirimiphos-methyl resistant *A. gambiae* and *A. coluzzii* from Côte d'Ivoire. Each of the resistant strains was independently compared to lab colonies from the same species (see below).
+Code and data to reproduce the analyses of differential gene expression in fenitrothion resistant *Aedes aegypti* from Angola.
 
 ## Setup
 
